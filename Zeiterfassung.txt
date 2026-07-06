@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+
+<html lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Döltschi Zeiterfassung - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .time-input-focus:focus-within {
+            border-color: #0058bc;
+            box-shadow: 0 0 0 1px #0058bc;
+        }
+        /* Custom scrollbar for horizontal grid on mobile */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#c2c6d5",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-background": "#0b1c30",
+                    "surface": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed": "#002113",
+                    "secondary-fixed": "#dde3ea",
+                    "on-secondary-fixed": "#161c21",
+                    "secondary": "#595f65",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "secondary-container": "#dde3ea",
+                    "tertiary": "#004f34",
+                    "surface-variant": "#d3e4fe",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#424753",
+                    "inverse-primary": "#adc6ff",
+                    "inverse-surface": "#213145",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-bright": "#f8f9ff",
+                    "tertiary-container": "#006947",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-primary-fixed-variant": "#004494",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "primary": "#00418f",
+                    "outline": "#727784",
+                    "primary-container": "#0058bc",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#095bbf",
+                    "on-secondary-fixed-variant": "#41484d",
+                    "on-secondary-container": "#5f656b",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-container": "#5fecb0",
+                    "on-primary-fixed": "#001a41",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#c1c7ce",
+                    "surface-container": "#e5eeff",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#c3d4ff",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "max-width": "1280px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["IBM Plex Sans"],
+                    "headline-lg-mobile": ["IBM Plex Sans"],
+                    "body-lg": ["IBM Plex Sans"],
+                    "label-bold": ["IBM Plex Sans"],
+                    "body-sm": ["IBM Plex Sans"],
+                    "mono-data": ["JetBrains Mono"],
+                    "label-sm": ["IBM Plex Sans"],
+                    "headline-md": ["IBM Plex Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface font-body-lg text-on-surface min-h-screen pb-20 lg:pb-0">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full flex justify-between items-center px-margin-mobile lg:px-margin-desktop h-16 z-50 bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
+<div class="flex items-center gap-4">
+<span class="text-headline-md font-headline-md text-primary dark:text-primary-fixed-dim">Döltschi</span>
+<div class="hidden lg:flex items-center gap-6 ml-8">
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary py-4" href="#">Weekly Log</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-medium hover:bg-surface-container-low transition-colors px-2 py-1 rounded" href="#">Reports</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-medium hover:bg-surface-container-low transition-colors px-2 py-1 rounded" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant mr-4">
+<span class="material-symbols-outlined text-secondary mr-2" style="font-size: 20px;">calendar_today</span>
+<span class="text-body-sm font-label-bold">KW 42 (16.10 - 22.10)</span>
+</div>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline">
+<img class="w-full h-full object-cover" data-alt="Professional corporate headshot of a middle-aged male employee with a warm, encouraging smile, wearing a clean white business shirt. The portrait is set against a soft-focus office background with professional lighting that emphasizes a trustworthy and organized persona, consistent with a high-end corporate time-tracking application aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClghzdn1i7vLdHitMxeNTt_Qbit1RQs1uMFGmTVrD9zPsHoWZOD20tfpC-z__ToJ_io939FhxtsXYaJd23cd8-Y7FTJjatfqdhUvfANSandwhJnwbY8ie3tYeX7PNhX_2DsLY-X9mW6uhCTwbbNI8KA1RteZuvRx2Id7KVc-I1b9_Huuv1Pu0WOQ50sTD-EjVI7hwqLo2Bng2F4HcOem4Uj_BmC_DP4RX0F_PLtKhk7__vhpEY2PBI7b5-uwcjchkwTVMwnYaG6Is"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-64 fixed left-0 top-16 bg-surface-container-low border-r border-outline-variant py-6 px-4">
+<div class="mb-8 px-2">
+<h2 class="text-primary font-headline-md font-semibold">Döltschi Time</h2>
+<p class="text-on-surface-variant text-body-sm">Employee Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 bg-primary-container text-on-primary-container rounded-full scale-98 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-bold text-label-bold">Weekly Log</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-bold text-label-bold">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">insert_chart</span>
+<span class="font-label-bold text-label-bold">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</nav>
+<div class="pt-6 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors text-body-sm" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors text-body-sm" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 lg:ml-64 p-4 lg:p-margin-desktop max-w-[1400px]">
+<!-- Stats Section -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl shadow-none">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-bold font-label-bold text-secondary uppercase tracking-wider">Jahrestotal</span>
+<span class="material-symbols-outlined text-primary">history</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg font-mono-data">1'840.00</span>
+<span class="text-body-sm font-medium text-secondary">h</span>
+</div>
+<div class="mt-4 w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[72%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl shadow-none">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-bold font-label-bold text-secondary uppercase tracking-wider">Beschäftigungsgrad</span>
+<span class="material-symbols-outlined text-primary">work</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg font-mono-data">100</span>
+<span class="text-body-sm font-medium text-secondary">%</span>
+</div>
+<p class="mt-4 text-label-bold text-tertiary-container font-semibold">Vollzeit eingestellt</p>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl shadow-none">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-bold font-label-bold text-secondary uppercase tracking-wider">Überzeit/Saldo</span>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg font-mono-data text-tertiary-container">+4.50</span>
+<span class="text-body-sm font-medium text-secondary">h</span>
+</div>
+<p class="mt-4 text-label-bold text-on-surface-variant">Kumuliertes Guthaben</p>
+</div>
+</section>
+<!-- Dashboard Content -->
+<div class="flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h1 class="text-headline-md font-headline-md">Wochenübersicht</h1>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-bold hover:bg-primary-container transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px">add</span>
+                        Add Entry
+                    </button>
+</div>
+<!-- 7-Day Grid -->
+<div class="overflow-x-auto hide-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0">
+<div class="flex lg:grid lg:grid-cols-7 gap-4 min-w-[1000px] lg:min-w-0">
+<!-- Monday -->
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 transition-all hover:border-primary">
+<div class="mb-4 border-b border-outline-variant pb-2">
+<span class="block text-label-bold text-secondary uppercase">Montag</span>
+<span class="text-headline-md">16. Okt</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<span class="text-label-sm font-label-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">sunny</span> Vormittag
+                                    </span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="07:30"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="12:00"/>
+</div>
+</div>
+<div class="space-y-2">
+<span class="text-label-sm font-label-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bedtime</span> Nachmittag
+                                    </span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="13:00"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="17:00"/>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-bold text-secondary">Total</span>
+<span class="font-mono-data text-primary font-bold">8.5 h</span>
+</div>
+</div>
+</div>
+<!-- Tuesday -->
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 transition-all hover:border-primary">
+<div class="mb-4 border-b border-outline-variant pb-2">
+<span class="block text-label-bold text-secondary uppercase">Dienstag</span>
+<span class="text-headline-md">17. Okt</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<span class="text-label-sm font-label-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">sunny</span> Vormittag
+                                    </span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="08:00"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="12:00"/>
+</div>
+</div>
+<div class="space-y-2">
+<span class="text-label-sm font-label-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bedtime</span> Nachmittag
+                                    </span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="13:00"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="17:30"/>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-bold text-secondary">Total</span>
+<span class="font-mono-data text-primary font-bold">8.5 h</span>
+</div>
+</div>
+</div>
+<!-- Wednesday (Active day highlight) -->
+<div class="flex-1 bg-surface-container-lowest border-2 border-primary rounded-xl p-4 shadow-md ring-4 ring-primary/5">
+<div class="mb-4 border-b border-outline-variant pb-2 flex justify-between items-start">
+<div>
+<span class="block text-label-bold text-primary uppercase">Mittwoch</span>
+<span class="text-headline-md text-on-surface">18. Okt</span>
+</div>
+<span class="bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Heute</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<span class="text-label-sm font-label-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">sunny</span> Vormittag
+                                    </span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-primary rounded p-1 text-center bg-surface-container-low outline-none" type="text" value="07:45"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-primary rounded p-1 text-center bg-surface-container-low outline-none" type="text" value="12:15"/>
+</div>
+</div>
+<div class="space-y-2">
+<span class="text-label-sm font-label-bold text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bedtime</span> Nachmittag
+                                    </span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" type="text" value="13:15"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center time-input-focus outline-none" placeholder="--" type="text" value=""/>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-bold text-secondary">Total</span>
+<span class="font-mono-data text-primary font-bold">4.5 h*</span>
+</div>
+</div>
+</div>
+<!-- Thursday -->
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 transition-all hover:border-primary">
+<div class="mb-4 border-b border-outline-variant pb-2">
+<span class="block text-label-bold text-secondary uppercase">Donnerstag</span>
+<span class="text-headline-md">19. Okt</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-2 opacity-50">
+<span class="text-label-sm font-label-bold">Vormittag</span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center outline-none" placeholder="00:00" type="text"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center outline-none" placeholder="00:00" type="text"/>
+</div>
+</div>
+<div class="space-y-2 opacity-50">
+<span class="text-label-sm font-label-bold">Nachmittag</span>
+<div class="flex items-center gap-1">
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center outline-none" placeholder="00:00" type="text"/>
+<span class="text-outline">—</span>
+<input class="w-full text-mono-data font-mono-data border border-outline-variant rounded p-1 text-center outline-none" placeholder="00:00" type="text"/>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-bold text-secondary">Total</span>
+<span class="font-mono-data text-secondary">0.0 h</span>
+</div>
+</div>
+</div>
+<!-- Friday -->
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 transition-all hover:border-primary">
+<div class="mb-4 border-b border-outline-variant pb-2">
+<span class="block text-label-bold text-secondary uppercase">Freitag</span>
+<span class="text-headline-md">20. Okt</span>
+</div>
+<div class="space-y-4 opacity-50">
+<div class="h-24 flex items-center justify-center border-2 border-dashed border-outline-variant rounded">
+<button class="text-primary material-symbols-outlined">add_circle</button>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-bold text-secondary">Total</span>
+<span class="font-mono-data text-secondary">0.0 h</span>
+</div>
+</div>
+</div>
+<!-- Saturday -->
+<div class="flex-1 bg-surface-container-low border border-outline-variant border-dashed rounded-xl p-4 grayscale">
+<div class="mb-4 border-b border-outline-variant pb-2">
+<span class="block text-label-bold text-secondary uppercase">Samstag</span>
+<span class="text-headline-md text-secondary">21. Okt</span>
+</div>
+<div class="flex flex-col items-center justify-center h-24 text-secondary text-body-sm text-center">
+<span class="material-symbols-outlined mb-1">weekend</span>
+                                Weekend
+                            </div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-bold text-secondary">Total</span>
+<span class="font-mono-data text-secondary">0.0 h</span>
+</div>
+</div>
+<!-- Sunday -->
+<div class="flex-1 bg-surface-container-low border border-outline-variant border-dashed rounded-xl p-4 grayscale">
+<div class="mb-4 border-b border-outline-variant pb-2">
+<span class="block text-label-bold text-secondary uppercase">Sonntag</span>
+<span class="text-headline-md text-secondary">22. Okt</span>
+</div>
+<div class="flex flex-col items-center justify-center h-24 text-secondary text-body-sm text-center">
+<span class="material-symbols-outlined mb-1">weekend</span>
+                                Weekend
+                            </div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-bold text-secondary">Total</span>
+<span class="font-mono-data text-secondary">0.0 h</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Rows for complex entries (Mobile/Tablet Hybrid) -->
+<div class="mt-8 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<h3 class="text-label-bold font-label-bold text-primary">PROJECT ALLOCATION</h3>
+<span class="text-body-sm text-on-surface-variant">Last updated: 14:30 Today</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-4 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-10 bg-primary rounded-full"></div>
+<div>
+<p class="font-bold">Software Development</p>
+<p class="text-body-sm text-secondary">Project: Apollo Phase 2</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-data font-bold">12.5 h</p>
+<p class="text-label-sm text-tertiary-container font-semibold">On Track</p>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-10 bg-tertiary-fixed-dim rounded-full"></div>
+<div>
+<p class="font-bold">Client Meetings</p>
+<p class="text-body-sm text-secondary">Internal Overhead</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-data font-bold">4.0 h</p>
+<p class="text-label-sm text-on-surface-variant">Billable</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full h-16 flex justify-around items-center px-4 pb-safe bg-surface-container-lowest border-t border-outline-variant z-50">
+<a class="flex flex-col items-center justify-center text-primary font-bold scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="text-label-sm-mobile font-label-sm-mobile">Log</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-label-sm-mobile font-label-sm-mobile">Yearly</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">summarize</span>
+<span class="text-label-sm-mobile font-label-sm-mobile">Report</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-label-sm-mobile font-label-sm-mobile">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for time inputs
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.select();
+            });
+            input.addEventListener('change', (e) => {
+                // Mock visual feedback for saving
+                const parent = e.target.closest('div.flex-1');
+                if (parent) {
+                    parent.style.borderColor = '#00418f';
+                    setTimeout(() => {
+                        parent.style.borderColor = '';
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body></html>
