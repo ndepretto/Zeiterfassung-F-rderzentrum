@@ -3,7 +3,7 @@
 <html lang="de-CH"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Döltschi Time - All-in-One SPA</title>
+<title>Döltschi Time - Offline Edition</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
@@ -147,14 +147,14 @@
 <div class="flex items-center gap-4">
 <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2" id="addNewEntryGlobal">
 <span class="material-symbols-outlined text-sm">add</span> Neuer Eintrag
-                </button>
+                    </button>
 <button class="relative hover:bg-surface-container-low transition-colors p-2 rounded-full">
 <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
 <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
 </button>
 <button class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant bg-primary-container flex items-center justify-center text-primary text-xs font-bold hover:ring-2 hover:ring-primary transition-all" onclick="switchView('profile')">
-                    TD
-                </button>
+                        TD
+                    </button>
 </div>
 </div>
 </header>
@@ -183,8 +183,8 @@
 </div>
 <div class="divide-y divide-surface-container" id="activitiesList">
 <div class="p-6 flex items-center justify-center text-outline text-sm italic">
-                        Lade Aktivitäten...
-                    </div>
+                            Keine Aktivitäten vorhanden.
+                        </div>
 </div>
 </div>
 </section>
@@ -338,12 +338,7 @@
 <tr class="text-[10px] text-outline uppercase font-bold"><th class="px-6 py-4">Name &amp; Rolle</th><th class="px-6 py-4">Email</th><th class="px-6 py-4">Team</th><th class="px-6 py-4 text-right">Aktionen</th></tr>
 </thead>
 <tbody class="divide-y divide-outline-variant" id="mgmt-table-body">
-<tr class="hover:bg-surface-container-low">
-<td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-surface-variant"></div><div><p class="text-sm font-bold">Marc Döltschi</p><p class="text-[10px] text-primary">Senior Architekt</p></div></td>
-<td class="px-6 py-4 text-xs font-mono">m.doeltschi@company.com</td>
-<td class="px-6 py-4"><span class="bg-surface-container px-3 py-1 rounded-full text-[10px] font-bold">Core Engine</span></td>
-<td class="px-6 py-4 text-right"><span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">edit</span></td>
-</tr>
+<!-- Populated by JS -->
 </tbody>
 </table>
 </div>
@@ -422,24 +417,43 @@
 </form>
 </div>
 </div>
-<!-- Firebase SDKs (Compat version for simplicity in single-file) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
-        // 1. Firebase Configuration (Persisted)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDUcNBEBX9FUbRLnbFY99Iq877cVbZrCqQ",
-            authDomain: "doeltschi-time.firebaseapp.com",
-            projectId: "doeltschi-time",
-            storageBucket: "doeltschi-time.firebasestorage.app",
-            messagingSenderId: "799791230026",
-            appId: "1:799791230026:web:f2e573a06947ab78f8cab3",
-            measurementId: "G-4WYSMFZ9ED"
+        /**
+         * 1. Data Store Management (LocalStorage)
+         */
+        const STORE_KEYS = {
+            ACTIVITIES: 'doeltschi_activities',
+            EMPLOYEES: 'doeltschi_employees'
         };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
 
-        // 2. View Switching Logic (Robust SPA)
+        // Initial Seed Data
+        const DEFAULT_ACTIVITIES = [
+            { id: 1, user: "Thomas Döltschi", type: "Check-in", timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), status: "success" },
+            { id: 2, user: "Elena Keller", type: "Pause", timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(), status: "success" },
+            { id: 3, user: "Marc Döltschi", type: "Check-out", timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString(), status: "success" }
+        ];
+
+        const DEFAULT_EMPLOYEES = [
+            { id: 1, name: "Marc Döltschi", role: "Senior Architekt", email: "m.doeltschi@company.com", team: "Core Engine" },
+            { id: 2, name: "Elena Keller", role: "UI Designerin", email: "e.keller@company.com", team: "Design Hub" }
+        ];
+
+        function getLocal(key, defaultVal) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : defaultVal;
+        }
+
+        function setLocal(key, val) {
+            localStorage.setItem(key, JSON.stringify(val));
+        }
+
+        // Initialize Store if empty
+        if (!localStorage.getItem(STORE_KEYS.ACTIVITIES)) setLocal(STORE_KEYS.ACTIVITIES, DEFAULT_ACTIVITIES);
+        if (!localStorage.getItem(STORE_KEYS.EMPLOYEES)) setLocal(STORE_KEYS.EMPLOYEES, DEFAULT_EMPLOYEES);
+
+        /**
+         * 2. View Navigation Logic
+         */
         const navButtons = document.querySelectorAll('.nav-btn');
         const sections = document.querySelectorAll('.view-section');
         const viewTitle = document.getElementById('current-view-title');
@@ -454,101 +468,124 @@
         };
 
         function switchView(viewId) {
-            // Update UI visibility
             sections.forEach(sec => sec.classList.remove('active'));
             const targetSection = document.getElementById(`view-${viewId}`);
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
+            if (targetSection) targetSection.classList.add('active');
             
-            // Update sidebar active states
             navButtons.forEach(btn => btn.classList.remove('nav-item-active'));
             const activeBtn = document.querySelector(`[data-view="${viewId}"]`);
-            if (activeBtn) {
-                activeBtn.classList.add('nav-item-active');
-            }
+            if (activeBtn) activeBtn.classList.add('nav-item-active');
             
-            // Update Header Title
-            if (viewNames[viewId]) {
-                viewTitle.textContent = viewNames[viewId];
-            }
-
-            // Scroll view to top
+            if (viewNames[viewId]) viewTitle.textContent = viewNames[viewId];
             document.getElementById('view-container').scrollTop = 0;
-
-            // Update URL hash without reload for SPA behavior
             history.pushState(null, null, `#${viewId}`);
+
+            // Refresh data on view change
+            renderData();
         }
 
-        // Handle direct ID navigation and browser back/forward
         window.addEventListener('popstate', () => {
             const hash = window.location.hash.replace('#', '');
-            if (hash && viewNames[hash]) {
-                switchView(hash);
-            } else {
-                switchView('dashboard');
-            }
+            switchView(hash && viewNames[hash] ? hash : 'dashboard');
         });
-
-        // Initial view load based on hash
-        const initialHash = window.location.hash.replace('#', '');
-        if (initialHash && viewNames[initialHash]) {
-            switchView(initialHash);
-        }
 
         navButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                switchView(btn.getAttribute('data-view'));
-            });
+            btn.addEventListener('click', () => switchView(btn.getAttribute('data-view')));
         });
 
-        // 3. Live Dashboard Logic
-        function loadActivities() {
+        /**
+         * 3. UI Rendering Logic
+         */
+        function renderData() {
+            renderActivities();
+            renderEmployees();
+        }
+
+        function renderActivities() {
             const activitiesList = document.getElementById('activitiesList');
-            db.collection("activities").orderBy("timestamp", "desc").limit(5).onSnapshot((querySnapshot) => {
-                if (querySnapshot.empty) {
-                    activitiesList.innerHTML = '<div class="p-6 flex items-center justify-center text-outline text-sm italic">Keine Aktivitäten vorhanden.</div>';
-                    return;
-                }
-                activitiesList.innerHTML = '';
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const date = data.timestamp ? data.timestamp.toDate() : new Date();
-                    const timeString = date.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
-                    
-                    const div = document.createElement('div');
-                    div.className = "p-6 flex items-center justify-between hover:bg-surface-container-low transition-colors";
-                    div.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-primary">
-                                <span class="material-symbols-outlined">person</span>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold">${data.user}</p>
-                                <p class="text-[10px] text-outline">${data.type}</p>
-                            </div>
+            const data = getLocal(STORE_KEYS.ACTIVITIES, []);
+            
+            if (data.length === 0) {
+                activitiesList.innerHTML = '<div class="p-6 flex items-center justify-center text-outline text-sm italic">Keine Aktivitäten vorhanden.</div>';
+                return;
+            }
+
+            // Sort by timestamp desc
+            const sorted = [...data].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 5);
+            
+            activitiesList.innerHTML = '';
+            sorted.forEach(item => {
+                const date = new Date(item.timestamp);
+                const timeString = date.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+                
+                const div = document.createElement('div');
+                div.className = "p-6 flex items-center justify-between hover:bg-surface-container-low transition-colors";
+                div.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined">person</span>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm font-medium font-mono">${timeString}</p>
-                            <p class="text-[10px] text-tertiary-container font-bold uppercase">${data.status}</p>
+                        <div>
+                            <p class="text-sm font-bold">${item.user}</p>
+                            <p class="text-[10px] text-outline">${item.type}</p>
                         </div>
-                    `;
-                    activitiesList.appendChild(div);
-                });
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-medium font-mono">${timeString}</p>
+                        <p class="text-[10px] text-tertiary-container font-bold uppercase">${item.status}</p>
+                    </div>
+                `;
+                activitiesList.appendChild(div);
             });
         }
 
+        function renderEmployees() {
+            const tbody = document.getElementById('mgmt-table-body');
+            if (!tbody) return;
+            
+            const data = getLocal(STORE_KEYS.EMPLOYEES, []);
+            tbody.innerHTML = '';
+            
+            data.forEach(emp => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-surface-container-low border-t border-outline-variant";
+                row.innerHTML = `
+                    <td class="px-6 py-4 flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-[10px] text-primary font-bold">
+                            ${emp.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold">${emp.name}</p>
+                            <p class="text-[10px] text-primary">${emp.role}</p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-xs font-mono">${emp.email}</td>
+                    <td class="px-6 py-4"><span class="bg-surface-container px-3 py-1 rounded-full text-[10px] font-bold">${emp.team}</span></td>
+                    <td class="px-6 py-4 text-right"><span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">edit</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        /**
+         * 4. Action Handlers
+         */
         document.getElementById('addNewEntryGlobal').addEventListener('click', () => {
             const types = ["Check-in", "Check-out", "Pause", "Task Completed"];
-            db.collection("activities").add({
+            const activities = getLocal(STORE_KEYS.ACTIVITIES, []);
+            const newEntry = {
+                id: Date.now(),
                 user: "Thomas Döltschi",
                 type: types[Math.floor(Math.random() * types.length)],
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                timestamp: new Date().toISOString(),
                 status: "success"
-            }).catch(e => console.error("Error adding doc: ", e));
+            };
+            activities.push(newEntry);
+            setLocal(STORE_KEYS.ACTIVITIES, activities);
+            renderActivities();
         });
 
-        // 4. Management Logic
+        // Management Modal Logic
         const mgmtModal = document.getElementById('employeeModal');
         const openBtn = document.getElementById('openAddEmployeeModal');
         if (openBtn) openBtn.addEventListener('click', () => mgmtModal.classList.remove('hidden'));
@@ -558,20 +595,19 @@
 
         document.getElementById('addEmployeeForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const name = document.getElementById('newName').value;
-            const role = document.getElementById('newRole').value;
-            const email = document.getElementById('newEmail').value;
+            const employees = getLocal(STORE_KEYS.EMPLOYEES, []);
+            const newEmp = {
+                id: Date.now(),
+                name: document.getElementById('newName').value,
+                role: document.getElementById('newRole').value,
+                email: document.getElementById('newEmail').value,
+                team: "Neu Hinzugefügt"
+            };
             
-            const tbody = document.getElementById('mgmt-table-body');
-            const row = document.createElement('tr');
-            row.className = "hover:bg-surface-container-low border-t border-outline-variant";
-            row.innerHTML = `
-                <td class="px-6 py-4 flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-primary text-[10px]">NEW</div><div><p class="text-sm font-bold">${name}</p><p class="text-[10px] text-primary">${role}</p></div></td>
-                <td class="px-6 py-4 text-xs font-mono">${email}</td>
-                <td class="px-6 py-4"><span class="bg-surface-container px-3 py-1 rounded-full text-[10px] font-bold">New Hired</span></td>
-                <td class="px-6 py-4 text-right"><span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">edit</span></td>
-            `;
-            tbody.appendChild(row);
+            employees.push(newEmp);
+            setLocal(STORE_KEYS.EMPLOYEES, employees);
+            renderEmployees();
+            
             mgmtModal.classList.add('hidden');
             e.target.reset();
         });
@@ -585,7 +621,14 @@
             sidebar.classList.toggle('z-50');
         });
 
-        // Initialize
-        loadActivities();
-</script>
+        // Initial Load
+        const initialHash = window.location.hash.replace('#', '');
+        if (initialHash && viewNames[initialHash]) {
+            switchView(initialHash);
+        } else {
+            switchView('dashboard');
+        }
+        
+        renderData();
+    </script>
 </body></html>
