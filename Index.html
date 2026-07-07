@@ -12,53 +12,53 @@
             theme: {
               extend: {
                 "colors": {
-                        "on-primary": "#ffffff",
-                        "on-error": "#ffffff",
-                        "on-tertiary-fixed-variant": "#812800",
-                        "inverse-on-surface": "#edf0ff",
-                        "secondary": "#5c5f60",
-                        "inverse-primary": "#b2c5ff",
-                        "tertiary-fixed": "#ffdbcf",
-                        "on-surface": "#041b3c",
                         "on-primary-fixed": "#001848",
-                        "secondary-fixed": "#e1e2e4",
-                        "on-secondary-fixed-variant": "#444749",
-                        "on-primary-container": "#c4d2ff",
-                        "on-tertiary-container": "#ffc6b2",
-                        "surface-tint": "#0c56d0",
-                        "tertiary-container": "#a33500",
-                        "surface-container-low": "#f1f3ff",
-                        "surface-container-highest": "#d7e2ff",
-                        "surface-dim": "#cadaff",
-                        "tertiary": "#7b2600",
-                        "on-tertiary-fixed": "#380d00",
-                        "primary-fixed-dim": "#b2c5ff",
-                        "surface-bright": "#f9f9ff",
-                        "outline": "#737685",
-                        "primary-fixed": "#dae2ff",
-                        "on-secondary": "#ffffff",
-                        "surface-variant": "#d7e2ff",
-                        "on-secondary-fixed": "#191c1e",
-                        "on-error-container": "#93000a",
-                        "on-surface-variant": "#434654",
-                        "on-secondary-container": "#606365",
-                        "surface": "#f9f9ff",
                         "on-primary-fixed-variant": "#0040a2",
-                        "secondary-fixed-dim": "#c5c6c8",
-                        "primary-container": "#0052cc",
-                        "surface-container-high": "#e0e8ff",
-                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d7e2ff",
+                        "on-secondary-container": "#606365",
                         "background": "#f9f9ff",
-                        "on-background": "#041b3c",
-                        "primary": "#00418f",
-                        "inverse-surface": "#1d3052",
-                        "error": "#ba1a1a",
-                        "secondary-container": "#dee0e2",
-                        "surface-container": "#e8edff",
-                        "error-container": "#ffdad6",
                         "tertiary-fixed-dim": "#ffb59b",
+                        "primary": "#003d9b",
+                        "outline": "#737685",
+                        "tertiary-container": "#a33500",
+                        "secondary-fixed-dim": "#c5c6c8",
+                        "secondary-fixed": "#e1e2e4",
+                        "on-primary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "tertiary-fixed": "#ffdbcf",
                         "outline-variant": "#c3c6d6",
-                        "surface-container-lowest": "#ffffff"
+                        "primary-fixed": "#dae2ff",
+                        "on-primary-container": "#c4d2ff",
+                        "inverse-primary": "#b2c5ff",
+                        "surface-container-highest": "#d7e2ff",
+                        "surface-container-high": "#e0e8ff",
+                        "on-surface": "#041b3c",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "inverse-surface": "#1d3052",
+                        "surface-bright": "#f9f9ff",
+                        "on-secondary-fixed": "#191c1e",
+                        "error-container": "#ffdad6",
+                        "on-background": "#041b3c",
+                        "on-tertiary-container": "#ffc6b2",
+                        "on-secondary-fixed-variant": "#444749",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#0c56d0",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#cadaff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#5c5f60",
+                        "on-surface-variant": "#434654",
+                        "primary-container": "#0052cc",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#380d00",
+                        "tertiary": "#7b2600",
+                        "surface-container-low": "#f1f3ff",
+                        "surface-container": "#e8edff",
+                        "inverse-on-surface": "#edf0ff",
+                        "secondary-container": "#dee0e2"
                 },
                 "borderRadius": {
                         "DEFAULT": "0.25rem",
@@ -77,7 +77,7 @@
 <style>
         body { font-family: 'IBM Plex Sans', sans-serif; background-color: #f9f9ff; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
-        .nav-item-active { background-color: #e0e8ff; color: #00418f; border-left: 4px solid #00418f; font-weight: 700; }
+        .nav-item-active { background-color: #e0e8ff; color: #003d9b; border-left: 4px solid #003d9b; font-weight: 700; }
         .view-section { display: none; }
         .view-section.active { display: block; }
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
@@ -85,7 +85,7 @@
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-on-surface">
-<!-- Global Sidebar (from Document 9) -->
+<!-- Global Sidebar -->
 <aside class="h-screen w-64 flex flex-col fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant z-40 hidden md:flex">
 <div class="px-6 py-8 flex flex-col gap-1">
 <div class="flex items-center gap-3 mb-8">
@@ -152,15 +152,16 @@
 <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
 <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
 </button>
-<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant bg-primary-container flex items-center justify-center text-primary text-xs font-bold">
+<!-- Clickable User Profile Shortcut -->
+<button class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant bg-primary-container flex items-center justify-center text-primary text-xs font-bold hover:ring-2 hover:ring-primary transition-all" onclick="switchView('profile')">
                         TD
-                    </div>
+                    </button>
 </div>
 </div>
 </header>
 <!-- View Containers -->
 <div class="flex-1 overflow-y-auto p-8" id="view-container">
-<!-- 1. Dashboard View (from SCREEN_29) -->
+<!-- 1. Dashboard View -->
 <section class="view-section active" id="view-dashboard">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
@@ -179,7 +180,7 @@
 <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
 <div class="p-6 border-b border-surface-container flex justify-between items-center">
 <h3 class="font-bold">Neueste Aktivitäten</h3>
-<button class="text-primary text-sm font-semibold hover:underline">Alle ansehen</button>
+<button class="text-primary text-sm font-semibold hover:underline" onclick="switchView('reports')">Alle ansehen</button>
 </div>
 <div class="divide-y divide-surface-container" id="activitiesList">
 <div class="p-6 flex items-center justify-center text-outline text-sm italic">
@@ -188,7 +189,7 @@
 </div>
 </div>
 </section>
-<!-- 2. Weekly Overview View (from DOCUMENT_8) -->
+<!-- 2. Weekly Overview View -->
 <section class="view-section" id="view-weekly">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 <div class="bg-white p-6 border border-outline-variant rounded-xl flex flex-col justify-between">
@@ -231,7 +232,6 @@
 </div>
 </div>
 </div>
-<!-- Simplified placeholders for other days -->
 <div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75">
 <span class="block text-[10px] text-secondary uppercase font-bold">Montag</span><span class="text-xl font-bold">16. Okt.</span>
 <div class="mt-4 text-xs font-mono text-primary font-bold">8.5 h</div>
@@ -246,7 +246,7 @@
 <div class="bg-surface-container-low border border-outline-variant border-dashed rounded-xl p-4 grayscale"><span class="text-[10px] text-secondary font-bold">So 22.</span></div>
 </div>
 </section>
-<!-- 3. Team Dashboard View (from DOCUMENT_9) -->
+<!-- 3. Team Dashboard View -->
 <section class="view-section" id="view-team">
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
 <div class="md:col-span-2 bg-white border border-outline-variant p-6 rounded-xl">
@@ -292,7 +292,7 @@
 </div>
 </div>
 </section>
-<!-- 4. Reports View (from DOCUMENT_12) -->
+<!-- 4. Reports View -->
 <section class="view-section" id="view-reports">
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
 <div class="md:col-span-2 bg-white p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
@@ -325,7 +325,7 @@
 </table>
 </div>
 </section>
-<!-- 5. Management View (from DOCUMENT_10) -->
+<!-- 5. Management View -->
 <section class="view-section" id="view-management">
 <div class="flex justify-between items-end mb-6">
 <div>
@@ -350,7 +350,7 @@
 </table>
 </div>
 </section>
-<!-- 6. Profile View (from DOCUMENT_11) -->
+<!-- 6. Profile View -->
 <section class="view-section" id="view-profile">
 <div class="max-w-4xl mx-auto space-y-8">
 <!-- Profile Hero -->
@@ -398,7 +398,7 @@
 </section>
 </div>
 </main>
-<!-- Modal: Add Employee (from DOCUMENT_10) -->
+<!-- Modal: Add Employee -->
 <div class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" id="employeeModal">
 <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden border border-outline-variant">
 <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
@@ -431,7 +431,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
-        // 1. Firebase Configuration (from SCREEN_29)
+        // 1. Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDUcNBEBX9FUbRLnbFY99Iq877cVbZrCqQ",
             authDomain: "doeltschi-time.firebaseapp.com",
@@ -459,13 +459,46 @@
         };
 
         function switchView(viewId) {
+            // Update UI visibility
             sections.forEach(sec => sec.classList.remove('active'));
-            document.getElementById(`view-${viewId}`).classList.add('active');
+            const targetSection = document.getElementById(`view-${viewId}`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
             
+            // Update sidebar active states
             navButtons.forEach(btn => btn.classList.remove('nav-item-active'));
-            document.querySelector(`[data-view="${viewId}"]`).classList.add('nav-item-active');
+            const activeBtn = document.querySelector(`[data-view="${viewId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('nav-item-active');
+            }
             
-            viewTitle.textContent = viewNames[viewId];
+            // Update Header Title
+            if (viewNames[viewId]) {
+                viewTitle.textContent = viewNames[viewId];
+            }
+
+            // Scroll view to top
+            document.getElementById('view-container').scrollTop = 0;
+
+            // Update URL hash without reload for SPA behavior
+            history.pushState(null, null, `#${viewId}`);
+        }
+
+        // Handle direct ID navigation and browser back/forward
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && viewNames[hash]) {
+                switchView(hash);
+            } else {
+                switchView('dashboard');
+            }
+        });
+
+        // Initial view load based on hash
+        const initialHash = window.location.hash.replace('#', '');
+        if (initialHash && viewNames[initialHash]) {
+            switchView(initialHash);
         }
 
         navButtons.forEach(btn => {
@@ -474,7 +507,7 @@
             });
         });
 
-        // 3. Live Dashboard Logic (from SCREEN_29)
+        // 3. Live Dashboard Logic
         function loadActivities() {
             const activitiesList = document.getElementById('activitiesList');
             db.collection("activities").orderBy("timestamp", "desc").limit(5).onSnapshot((querySnapshot) => {
@@ -520,9 +553,11 @@
             });
         });
 
-        // 4. Management Logic (from DOCUMENT_10)
+        // 4. Management Logic
         const mgmtModal = document.getElementById('employeeModal');
-        document.getElementById('openAddEmployeeModal').addEventListener('click', () => mgmtModal.classList.remove('hidden'));
+        const openBtn = document.getElementById('openAddEmployeeModal');
+        if (openBtn) openBtn.addEventListener('click', () => mgmtModal.classList.remove('hidden'));
+        
         document.getElementById('closeMgmtModal').addEventListener('click', () => mgmtModal.classList.add('hidden'));
         document.getElementById('cancelMgmtModal').addEventListener('click', () => mgmtModal.classList.add('hidden'));
 
@@ -544,6 +579,15 @@
             tbody.appendChild(row);
             mgmtModal.classList.add('hidden');
             e.target.reset();
+        });
+
+        // Mobile Menu Toggle (Simplified)
+        document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+            const sidebar = document.querySelector('aside');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('flex');
+            sidebar.classList.toggle('w-full');
+            sidebar.classList.toggle('z-50');
         });
 
         // Initialize
