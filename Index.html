@@ -147,15 +147,14 @@
 <div class="flex items-center gap-4">
 <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2" id="addNewEntryGlobal">
 <span class="material-symbols-outlined text-sm">add</span> Neuer Eintrag
-                    </button>
+                </button>
 <button class="relative hover:bg-surface-container-low transition-colors p-2 rounded-full">
 <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
 <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
 </button>
-<!-- Clickable User Profile Shortcut -->
 <button class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant bg-primary-container flex items-center justify-center text-primary text-xs font-bold hover:ring-2 hover:ring-primary transition-all" onclick="switchView('profile')">
-                        TD
-                    </button>
+                    TD
+                </button>
 </div>
 </div>
 </header>
@@ -184,8 +183,8 @@
 </div>
 <div class="divide-y divide-surface-container" id="activitiesList">
 <div class="p-6 flex items-center justify-center text-outline text-sm italic">
-                            Lade Aktivitäten...
-                        </div>
+                        Lade Aktivitäten...
+                    </div>
 </div>
 </div>
 </section>
@@ -215,7 +214,6 @@
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-7 gap-4 mb-8">
-<!-- Week day blocks -->
 <div class="bg-white border-2 border-primary rounded-xl p-4 shadow-sm">
 <div class="mb-4 border-b pb-2 flex justify-between items-start">
 <div><span class="block text-[10px] text-primary uppercase font-bold">Mittwoch</span><span class="text-xl font-bold">18. Okt.</span></div>
@@ -353,7 +351,6 @@
 <!-- 6. Profile View -->
 <section class="view-section" id="view-profile">
 <div class="max-w-4xl mx-auto space-y-8">
-<!-- Profile Hero -->
 <div class="bg-white border border-outline-variant rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center md:items-start relative overflow-hidden shadow-sm">
 <div class="w-32 h-32 rounded-xl bg-surface-container-high border-2 border-primary overflow-hidden">
 <img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWDrKjX5ezWZNw68e2EIj5RBFSUlPwg_iEzheA-7sABFngYckMJGjHmoGcC33EB-QjK09qRQVVmQIF_N6aLAZKe8SjKdBBR7IafpYD8wFITH-xXoL3RvIme-Qb1aE4B_445t3EFNyI8wrYwYan-sP3JG0FZ-_5Qm7o3ep7A9hNa8r_gbRmSwsSSRld0v7-Jpps_ylZOVxmoNotUhvws8OvcCQXX9bnmdpNjW8J6A4s_I_Kssp9P9VUm2V0umNsgu6deJZ3AOSHbKM"/>
@@ -367,7 +364,6 @@
 </div>
 </div>
 </div>
-<!-- Profile Stats -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="bg-white border border-outline-variant rounded-xl p-6">
 <h4 class="text-xs font-bold text-outline uppercase mb-4">Beschäftigungsgrad</h4>
@@ -380,7 +376,6 @@
 <div class="mt-4 flex gap-1"><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-surface-container rounded-full"></div></div>
 </div>
 </div>
-<!-- Account Switcher -->
 <div class="bg-white border border-outline-variant rounded-xl p-8">
 <h3 class="text-lg font-bold mb-6">Benutzer wechseln</h3>
 <div class="flex gap-8 overflow-x-auto pb-2">
@@ -427,11 +422,11 @@
 </form>
 </div>
 </div>
-<!-- Firebase SDKs -->
+<!-- Firebase SDKs (Compat version for simplicity in single-file) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
-        // 1. Firebase Configuration
+        // 1. Firebase Configuration (Persisted)
         const firebaseConfig = {
             apiKey: "AIzaSyDUcNBEBX9FUbRLnbFY99Iq877cVbZrCqQ",
             authDomain: "doeltschi-time.firebaseapp.com",
@@ -444,7 +439,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 2. View Switching Logic
+        // 2. View Switching Logic (Robust SPA)
         const navButtons = document.querySelectorAll('.nav-btn');
         const sections = document.querySelectorAll('.view-section');
         const viewTitle = document.getElementById('current-view-title');
@@ -550,7 +545,7 @@
                 type: types[Math.floor(Math.random() * types.length)],
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 status: "success"
-            });
+            }).catch(e => console.error("Error adding doc: ", e));
         });
 
         // 4. Management Logic
@@ -581,7 +576,7 @@
             e.target.reset();
         });
 
-        // Mobile Menu Toggle (Simplified)
+        // Mobile Menu Toggle
         document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
             const sidebar = document.querySelector('aside');
             sidebar.classList.toggle('hidden');
@@ -592,5 +587,5 @@
 
         // Initialize
         loadActivities();
-    </script>
+</script>
 </body></html>
