@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="de-CH"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Döltschi Time - Offline Edition</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<!DOCTYPE html><html lang="de-CH"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
           tailwind.config = {
             darkMode: "class",
             theme: {
@@ -73,351 +65,349 @@
               }
             }
           }
-    </script>
-<style>
-        body { font-family: 'IBM Plex Sans', sans-serif; background-color: #f9f9ff; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
-        .nav-item-active { background-color: #e0e8ff; color: #003d9b; border-left: 4px solid #003d9b; font-weight: 700; }
-        .view-section { display: none; }
-        .view-section.active { display: block; }
-        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
-        .sidebar-scroll::-webkit-scrollbar-thumb { background: #c3c6d6; border-radius: 10px; }
-    </style>
-</head>
-<body class="flex h-screen overflow-hidden text-on-surface">
-<!-- Global Sidebar -->
-<aside class="h-screen w-64 flex flex-col fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant z-40 hidden md:flex">
-<div class="px-6 py-8 flex flex-col gap-1">
-<div class="flex items-center gap-3 mb-8">
-<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
-</div>
-<div>
-<h1 class="text-xl font-bold text-primary leading-none">Döltschi Time</h1>
-<p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Precision &amp; Flow</p>
-</div>
-</div>
-<nav class="flex flex-col h-full py-2 gap-1 overflow-y-auto sidebar-scroll" id="main-nav">
-<button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer nav-item-active" data-view="dashboard">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="text-sm font-semibold">Dashboard</span>
-</button>
-<button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="weekly">
-<span class="material-symbols-outlined">calendar_view_week</span>
-<span class="text-sm font-semibold">Wochenübersicht</span>
-</button>
-<button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="reports">
-<span class="material-symbols-outlined">analytics</span>
-<span class="text-sm font-semibold">Monatsberichte</span>
-</button>
-<button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="team">
-<span class="material-symbols-outlined">group</span>
-<span class="text-sm font-semibold">Team Dashboard</span>
-</button>
-<button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="management">
-<span class="material-symbols-outlined">person_search</span>
-<span class="text-sm font-semibold">Mitarbeiter-Verwaltung</span>
-</button>
-<button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="profile">
-<span class="material-symbols-outlined">settings</span>
-<span class="text-sm font-semibold">Profil &amp; Einstellungen</span>
-</button>
-</nav>
-</div>
-<div class="mt-auto border-t border-outline-variant p-4">
-<a class="text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-error-container hover:text-on-error-container transition-all duration-200 cursor-pointer rounded" href="#">
-<span class="material-symbols-outlined">logout</span>
-<span class="text-sm font-semibold">Abmelden</span>
-</a>
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="md:ml-64 flex-1 flex flex-col h-full overflow-hidden">
-<!-- Shared Header -->
-<header class="bg-surface border-b border-outline-variant h-16 w-full flex justify-between items-center px-8 flex-shrink-0 z-30">
-<div class="flex items-center gap-4">
-<span class="md:hidden material-symbols-outlined text-on-surface cursor-pointer" id="mobile-menu-toggle">menu</span>
-<h2 class="text-xl font-bold text-primary" id="current-view-title">Dashboard</h2>
-</div>
-<div class="flex items-center gap-6">
-<div class="hidden lg:flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant">
-<span class="material-symbols-outlined text-outline text-sm mr-2">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm w-48 p-0" placeholder="Suchen..." type="text"/>
-</div>
-<div class="flex items-center gap-4">
-<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2" id="addNewEntryGlobal">
-<span class="material-symbols-outlined text-sm">add</span> Neuer Eintrag
+    }catch(_e){}</script></head><body class="flex h-screen overflow-hidden text-on-surface">
+    <!-- Global Sidebar -->
+    <aside class="h-screen w-64 flex flex-col fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant z-40 hidden md:flex">
+        <div class="px-6 py-8 flex flex-col gap-1">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-primary leading-none">Döltschi Time</h1>
+                    <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Precision &amp; Flow</p>
+                </div>
+            </div>
+            <nav class="flex flex-col h-full py-2 gap-1 overflow-y-auto sidebar-scroll" id="main-nav">
+                <button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer nav-item-active" data-view="dashboard">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-sm font-semibold">Dashboard</span>
+                </button>
+                <button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="weekly">
+                    <span class="material-symbols-outlined">calendar_view_week</span>
+                    <span class="text-sm font-semibold">Wochenübersicht</span>
+                </button>
+                <button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="reports">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span class="text-sm font-semibold">Monatsberichte</span>
+                </button>
+                <button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="team">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="text-sm font-semibold">Team Dashboard</span>
+                </button>
+                <button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="management">
+                    <span class="material-symbols-outlined">person_search</span>
+                    <span class="text-sm font-semibold">Mitarbeiter-Verwaltung</span>
+                </button>
+                <button class="nav-btn text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-all duration-200 cursor-pointer" data-view="profile">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-semibold">Profil &amp; Einstellungen</span>
+                </button>
+            </nav>
+        </div>
+        <div class="mt-auto border-t border-outline-variant p-4">
+            <a class="text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-error-container hover:text-on-error-container transition-all duration-200 cursor-pointer rounded" href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-sm font-semibold">Abmelden</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="md:ml-64 flex-1 flex flex-col h-full overflow-hidden">
+        <!-- Shared Header -->
+        <header class="bg-surface border-b border-outline-variant h-16 w-full flex justify-between items-center px-8 flex-shrink-0 z-30">
+            <div class="flex items-center gap-4">
+                <span class="md:hidden material-symbols-outlined text-on-surface cursor-pointer" id="mobile-menu-toggle">menu</span>
+                <h2 class="text-xl font-bold text-primary" id="current-view-title">Dashboard</h2>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="hidden lg:flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant">
+                    <span class="material-symbols-outlined text-outline text-sm mr-2">search</span>
+                    <input class="bg-transparent border-none focus:ring-0 text-sm w-48 p-0" placeholder="Suchen..." type="text">
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2" id="addNewEntryGlobal">
+                        <span class="material-symbols-outlined text-sm">add</span> Neuer Eintrag
                     </button>
-<button class="relative hover:bg-surface-container-low transition-colors p-2 rounded-full">
-<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
-<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant bg-primary-container flex items-center justify-center text-primary text-xs font-bold hover:ring-2 hover:ring-primary transition-all" onclick="switchView('profile')">
+                    <button class="relative hover:bg-surface-container-low transition-colors p-2 rounded-full">
+                        <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+                    </button>
+                    <button class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant bg-primary-container flex items-center justify-center text-primary text-xs font-bold hover:ring-2 hover:ring-primary transition-all" onclick="switchView('profile')">
                         TD
                     </button>
-</div>
-</div>
-</header>
-<!-- View Containers -->
-<div class="flex-1 overflow-y-auto p-8" id="view-container">
-<!-- 1. Dashboard View -->
-<section class="view-section active" id="view-dashboard">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
-<p class="text-xs text-on-surface-variant uppercase font-bold mb-2">Aktive Mitglieder</p>
-<h3 class="text-3xl font-bold">24 / 28</h3>
-</div>
-<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
-<p class="text-xs text-on-surface-variant uppercase font-bold mb-2">Team Gesundheit</p>
-<h3 class="text-3xl font-bold">92%</h3>
-</div>
-<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
-<p class="text-xs text-on-surface-variant uppercase font-bold mb-2">Ausstehend</p>
-<h3 class="text-3xl font-bold text-error">12</h3>
-</div>
-</div>
-<div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
-<div class="p-6 border-b border-surface-container flex justify-between items-center">
-<h3 class="font-bold">Neueste Aktivitäten</h3>
-<button class="text-primary text-sm font-semibold hover:underline" onclick="switchView('reports')">Alle ansehen</button>
-</div>
-<div class="divide-y divide-surface-container" id="activitiesList">
-<div class="p-6 flex items-center justify-center text-outline text-sm italic">
+                </div>
+            </div>
+        </header>
+
+        <!-- View Containers -->
+        <div class="flex-1 overflow-y-auto p-8" id="view-container">
+            <!-- 1. Dashboard View -->
+            <section class="view-section active" id="view-dashboard">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <p class="text-xs text-on-surface-variant uppercase font-bold mb-2">Aktive Mitglieder</p>
+                        <h3 class="text-3xl font-bold">24 / 28</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <p class="text-xs text-on-surface-variant uppercase font-bold mb-2">Team Gesundheit</p>
+                        <h3 class="text-3xl font-bold">92%</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+                        <p class="text-xs text-on-surface-variant uppercase font-bold mb-2">Ausstehend</p>
+                        <h3 class="text-3xl font-bold text-error">12</h3>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-surface-container flex justify-between items-center">
+                        <h3 class="font-bold">Neueste Aktivitäten</h3>
+                        <button class="text-primary text-sm font-semibold hover:underline" onclick="switchView('reports')">Alle ansehen</button>
+                    </div>
+                    <div class="divide-y divide-surface-container" id="activitiesList">
+                        <div class="p-6 flex items-center justify-center text-outline text-sm italic">
                             Keine Aktivitäten vorhanden.
                         </div>
-</div>
-</div>
-</section>
-<!-- 2. Weekly Overview View -->
-<section class="view-section" id="view-weekly">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-<div class="bg-white p-6 border border-outline-variant rounded-xl flex flex-col justify-between">
-<span class="text-xs font-bold text-secondary uppercase tracking-wider">Jahrestotal</span>
-<div class="flex items-baseline gap-2 mt-1">
-<span class="text-3xl font-bold font-mono">1'840.00</span>
-<span class="text-sm font-medium text-secondary">h</span>
-</div>
-</div>
-<div class="bg-white p-6 border border-outline-variant rounded-xl">
-<span class="text-xs font-bold text-secondary uppercase tracking-wider">Beschäftigungsgrad</span>
-<div class="flex items-baseline gap-2 mt-1">
-<span class="text-3xl font-bold font-mono">100</span>
-<span class="text-sm font-medium text-secondary">%</span>
-</div>
-</div>
-<div class="bg-white p-6 border border-outline-variant rounded-xl">
-<span class="text-xs font-bold text-secondary uppercase tracking-wider">Überzeit/Saldo</span>
-<div class="flex items-baseline gap-2 mt-1">
-<span class="text-3xl font-bold font-mono text-tertiary">+4.50</span>
-<span class="text-sm font-medium text-secondary">h</span>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-7 gap-4 mb-8">
-<div class="bg-white border-2 border-primary rounded-xl p-4 shadow-sm">
-<div class="mb-4 border-b pb-2 flex justify-between items-start">
-<div><span class="block text-[10px] text-primary uppercase font-bold">Mittwoch</span><span class="text-xl font-bold">18. Okt.</span></div>
-<span class="bg-primary text-white text-[8px] px-2 py-0.5 rounded-full font-bold">HEUTE</span>
-</div>
-<div class="space-y-4">
-<div class="space-y-1">
-<span class="text-[10px] font-bold text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-xs">sunny</span> VORMITTAG</span>
-<input class="w-full text-xs font-mono border border-outline-variant rounded p-1 text-center" value="07:45 - 12:15"/>
-</div>
-<div class="space-y-1">
-<span class="text-[10px] font-bold text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-xs">bedtime</span> NACHMITTAG</span>
-<input class="w-full text-xs font-mono border border-outline-variant rounded p-1 text-center" placeholder="--:-- - --:--"/>
-</div>
-</div>
-</div>
-<div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75">
-<span class="block text-[10px] text-secondary uppercase font-bold">Montag</span><span class="text-xl font-bold">16. Okt.</span>
-<div class="mt-4 text-xs font-mono text-primary font-bold">8.5 h</div>
-</div>
-<div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75">
-<span class="block text-[10px] text-secondary uppercase font-bold">Dienstag</span><span class="text-xl font-bold">17. Okt.</span>
-<div class="mt-4 text-xs font-mono text-primary font-bold">8.5 h</div>
-</div>
-<div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75"><span class="text-[10px] text-secondary font-bold">Do 19.</span></div>
-<div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75"><span class="text-[10px] text-secondary font-bold">Fr 20.</span></div>
-<div class="bg-surface-container-low border border-outline-variant border-dashed rounded-xl p-4 grayscale"><span class="text-[10px] text-secondary font-bold">Sa 21.</span></div>
-<div class="bg-surface-container-low border border-outline-variant border-dashed rounded-xl p-4 grayscale"><span class="text-[10px] text-secondary font-bold">So 22.</span></div>
-</div>
-</section>
-<!-- 3. Team Dashboard View -->
-<section class="view-section" id="view-team">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-<div class="md:col-span-2 bg-white border border-outline-variant p-6 rounded-xl">
-<p class="text-xs font-bold text-on-surface-variant uppercase mb-2">Team-Anwesenheit</p>
-<h3 class="text-2xl font-bold text-primary mb-4">Wer ist momentan aktiv</h3>
-<div class="flex items-center gap-6">
-<div class="text-center"><span class="text-2xl font-bold">14</span><p class="text-[10px] text-outline">Am Arbeiten</p></div>
-<div class="text-center"><span class="text-2xl font-bold text-secondary">3</span><p class="text-[10px] text-outline">Pause</p></div>
-<div class="flex -space-x-2 ml-auto">
-<div class="w-8 h-8 rounded-full border-2 border-white bg-primary text-white text-[10px] flex items-center justify-center">+5</div>
-</div>
-</div>
-</div>
-<div class="bg-white border border-outline-variant p-6 rounded-xl flex flex-col justify-center items-center">
-<p class="text-xs font-bold text-on-surface-variant uppercase mb-4">Kapazität</p>
-<div class="relative w-20 h-20 flex items-center justify-center">
-<svg class="w-full h-full -rotate-90"><circle class="text-surface-container-high" cx="40" cy="40" fill="transparent" r="35" stroke="currentColor" stroke-width="6"></circle><circle class="text-primary" cx="40" cy="40" fill="transparent" r="35" stroke="currentColor" stroke-dasharray="220" stroke-dashoffset="55" stroke-width="6"></circle></svg>
-<span class="absolute text-sm font-bold">75%</span>
-</div>
-</div>
-<div class="bg-error-container p-6 rounded-xl text-on-error-container">
-<p class="text-[10px] font-bold uppercase mb-2">Korrekturanfragen</p>
-<h4 class="text-4xl font-bold">08</h4>
-<button class="mt-4 w-full bg-on-error-container text-white py-2 rounded-lg text-xs font-bold">Prüfen</button>
-</div>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="bg-white border border-outline-variant p-5 rounded-xl hover:shadow-md transition-shadow">
-<div class="flex items-center gap-3 mb-4">
-<div class="w-10 h-10 rounded-full bg-surface-variant border-2 border-tertiary-fixed-dim"></div>
-<div><h4 class="text-sm font-bold">Stefan Müller</h4><p class="text-[10px] text-outline">Chefarchitekt</p></div>
-</div>
-<div class="w-full h-1.5 bg-surface-container rounded-full"><div class="h-full bg-primary rounded-full w-[86%]"></div></div>
-<div class="mt-2 flex justify-between text-[10px]"><span class="text-tertiary-fixed-dim font-bold">Im Büro</span><span class="font-mono">34:45 / 40h</span></div>
-</div>
-<div class="bg-white border border-outline-variant p-5 rounded-xl hover:shadow-md transition-shadow">
-<div class="flex items-center gap-3 mb-4">
-<div class="w-10 h-10 rounded-full bg-surface-variant border-2 border-primary-fixed"></div>
-<div><h4 class="text-sm font-bold">Elena Keller</h4><p class="text-[10px] text-outline">UI-Designerin</p></div>
-</div>
-<div class="w-full h-1.5 bg-surface-container rounded-full"><div class="h-full bg-primary rounded-full w-[88%]"></div></div>
-<div class="mt-2 flex justify-between text-[10px]"><span class="text-primary-fixed-variant font-bold">Homeoffice</span><span class="font-mono">28:10 / 32h</span></div>
-</div>
-</div>
-</section>
-<!-- 4. Reports View -->
-<section class="view-section" id="view-reports">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-<div class="md:col-span-2 bg-white p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
-<span class="text-xs font-bold text-outline uppercase tracking-wider">Gesamtstunden (Okt)</span>
-<div class="flex items-baseline gap-2 mt-2">
-<h3 class="text-3xl font-bold text-primary">168.5</h3>
-<span class="text-sm text-on-surface-variant">/ 160.0h Ziel</span>
-</div>
-<div class="mt-4 w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
-<div class="bg-tertiary-container h-full w-[85%]"></div>
-</div>
-</div>
-<div class="bg-white p-6 rounded-xl border border-outline-variant">
-<span class="text-xs font-bold text-outline uppercase tracking-wider">Verrechenbar</span>
-<h3 class="text-2xl font-bold mt-2">92.4%</h3>
-</div>
-<div class="bg-white p-6 rounded-xl border border-outline-variant">
-<span class="text-xs font-bold text-outline uppercase tracking-wider">Netto Überzeit</span>
-<h3 class="text-2xl font-bold mt-2">+8h 30m</h3>
-</div>
-</div>
-<div class="bg-white border border-outline-variant rounded-xl overflow-hidden mb-8">
-<div class="px-6 py-4 border-b border-surface-container bg-surface-container-low font-bold text-sm">PROJEKTZUTEILUNG</div>
-<table class="w-full text-left">
-<thead><tr class="text-[10px] text-outline uppercase border-b border-surface-container"><th class="px-6 py-4">Projekt</th><th class="px-6 py-4 text-right">Stunden</th><th class="px-6 py-4">Status</th></tr></thead>
-<tbody class="divide-y divide-surface-container">
-<tr class="hover:bg-surface-container-low"><td class="px-6 py-4 text-sm font-bold">Alpha Phoenix Redesign</td><td class="px-6 py-4 text-right font-mono">72:45</td><td class="px-6 py-4"><span class="px-2 py-0.5 bg-tertiary-fixed text-[8px] font-bold rounded-full">AKTIV</span></td></tr>
-<tr class="hover:bg-surface-container-low"><td class="px-6 py-4 text-sm font-bold">Interne Wartung</td><td class="px-6 py-4 text-right font-mono">45:20</td><td class="px-6 py-4"><span class="px-2 py-0.5 bg-surface-variant text-[8px] font-bold rounded-full">RECURRING</span></td></tr>
-</tbody>
-</table>
-</div>
-</section>
-<!-- 5. Management View -->
-<section class="view-section" id="view-management">
-<div class="flex justify-between items-end mb-6">
-<div>
-<h3 class="text-2xl font-bold mb-1">Mitarbeiter-Verwaltung</h3>
-<p class="text-sm text-on-surface-variant">Zugriffe und Rollen Ihres Teams verwalten.</p>
-</div>
-<button class="bg-primary text-white px-6 py-2 rounded-lg font-bold text-sm shadow-sm hover:opacity-90" id="openAddEmployeeModal">Mitarbeiter hinzufügen</button>
-</div>
-<div class="bg-white border border-outline-variant rounded-xl overflow-hidden">
-<table class="w-full text-left">
-<thead class="bg-surface-container-low border-b border-outline-variant">
-<tr class="text-[10px] text-outline uppercase font-bold"><th class="px-6 py-4">Name &amp; Rolle</th><th class="px-6 py-4">Email</th><th class="px-6 py-4">Team</th><th class="px-6 py-4 text-right">Aktionen</th></tr>
-</thead>
-<tbody class="divide-y divide-outline-variant" id="mgmt-table-body">
-<!-- Populated by JS -->
-</tbody>
-</table>
-</div>
-</section>
-<!-- 6. Profile View -->
-<section class="view-section" id="view-profile">
-<div class="max-w-4xl mx-auto space-y-8">
-<div class="bg-white border border-outline-variant rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center md:items-start relative overflow-hidden shadow-sm">
-<div class="w-32 h-32 rounded-xl bg-surface-container-high border-2 border-primary overflow-hidden">
-<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWDrKjX5ezWZNw68e2EIj5RBFSUlPwg_iEzheA-7sABFngYckMJGjHmoGcC33EB-QjK09qRQVVmQIF_N6aLAZKe8SjKdBBR7IafpYD8wFITH-xXoL3RvIme-Qb1aE4B_445t3EFNyI8wrYwYan-sP3JG0FZ-_5Qm7o3ep7A9hNa8r_gbRmSwsSSRld0v7-Jpps_ylZOVxmoNotUhvws8OvcCQXX9bnmdpNjW8J6A4s_I_Kssp9P9VUm2V0umNsgu6deJZ3AOSHbKM"/>
-</div>
-<div class="flex-1 text-center md:text-left">
-<h2 class="text-3xl font-bold mb-1">Markus Döltschi</h2>
-<p class="text-on-surface-variant mb-4">Leitender Projektarchitekt • Engineering</p>
-<div class="flex flex-wrap justify-center md:justify-start gap-3">
-<span class="bg-surface-container px-4 py-1.5 rounded-full text-xs font-bold text-primary">m.doeltschi@company.com</span>
-<span class="bg-tertiary-container/10 px-4 py-1.5 rounded-full text-xs font-bold text-tertiary">Admin-Zugriff</span>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="bg-white border border-outline-variant rounded-xl p-6">
-<h4 class="text-xs font-bold text-outline uppercase mb-4">Beschäftigungsgrad</h4>
-<div class="flex items-baseline gap-2"><span class="text-4xl font-bold">100%</span><span class="text-sm text-outline">Vollzeit</span></div>
-<div class="mt-4 h-2 bg-surface-container rounded-full"><div class="h-full bg-primary rounded-full w-full"></div></div>
-</div>
-<div class="bg-white border border-outline-variant rounded-xl p-6">
-<h4 class="text-xs font-bold text-outline uppercase mb-4">Wochenziel</h4>
-<div class="flex items-baseline gap-2"><span class="text-4xl font-bold font-mono">42.5</span><span class="text-sm text-outline">Stunden</span></div>
-<div class="mt-4 flex gap-1"><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-surface-container rounded-full"></div></div>
-</div>
-</div>
-<div class="bg-white border border-outline-variant rounded-xl p-8">
-<h3 class="text-lg font-bold mb-6">Benutzer wechseln</h3>
-<div class="flex gap-8 overflow-x-auto pb-2">
-<button class="flex flex-col items-center gap-2 min-w-[80px] group">
-<div class="w-16 h-16 rounded-full bg-surface-container border-2 border-outline-variant group-hover:border-primary"></div>
-<span class="text-xs font-bold">Sarah Miller</span>
-</button>
-<button class="flex flex-col items-center gap-2 min-w-[80px] group">
-<div class="w-16 h-16 rounded-full bg-surface-container border-2 border-outline-variant group-hover:border-primary"></div>
-<span class="text-xs font-bold">David Chen</span>
-</button>
-</div>
-</div>
-</div>
-</section>
-</div>
-</main>
-<!-- Modal: Add Employee -->
-<div class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" id="employeeModal">
-<div class="bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden border border-outline-variant">
-<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
-<h2 class="text-lg font-bold">Mitarbeiter hinzufügen</h2>
-<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container rounded-full p-1" id="closeMgmtModal">close</button>
-</div>
-<form class="p-6 space-y-4" id="addEmployeeForm">
-<div class="grid grid-cols-2 gap-4">
-<div class="flex flex-col gap-1">
-<label class="text-xs font-bold text-on-surface-variant" for="newName">Name</label>
-<input class="rounded-lg border-outline-variant text-sm p-2" id="newName" placeholder="z.B. Lukas Müller" required="" type="text"/>
-</div>
-<div class="flex flex-col gap-1">
-<label class="text-xs font-bold text-on-surface-variant" for="newRole">Rolle</label>
-<input class="rounded-lg border-outline-variant text-sm p-2" id="newRole" placeholder="z.B. Entwickler" required="" type="text"/>
-</div>
-</div>
-<div class="flex flex-col gap-1">
-<label class="text-xs font-bold text-on-surface-variant" for="newEmail">E-Mail</label>
-<input class="rounded-lg border-outline-variant text-sm p-2" id="newEmail" placeholder="beispiel@firma.ch" required="" type="email"/>
-</div>
-<div class="flex gap-3 pt-4">
-<button class="flex-1 py-2.5 border border-outline-variant rounded-lg text-sm font-bold text-on-surface-variant" id="cancelMgmtModal" type="button">Abbrechen</button>
-<button class="flex-1 py-2.5 bg-primary text-white rounded-lg text-sm font-bold" type="submit">Speichern</button>
-</div>
-</form>
-</div>
-</div>
-<script>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Weekly Overview View -->
+            <section class="view-section" id="view-weekly">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 border border-outline-variant rounded-xl flex flex-col justify-between">
+                        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Jahrestotal</span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-3xl font-bold font-mono">1'840.00</span>
+                            <span class="text-sm font-medium text-secondary">h</span>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 border border-outline-variant rounded-xl">
+                        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Beschäftigungsgrad</span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-3xl font-bold font-mono">100</span>
+                            <span class="text-sm font-medium text-secondary">%</span>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 border border-outline-variant rounded-xl">
+                        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Überzeit/Saldo</span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-3xl font-bold font-mono text-tertiary">+4.50</span>
+                            <span class="text-sm font-medium text-secondary">h</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-7 gap-4 mb-8">
+                    <div class="bg-white border-2 border-primary rounded-xl p-4 shadow-sm">
+                        <div class="mb-4 border-b pb-2 flex justify-between items-start">
+                            <div><span class="block text-[10px] text-primary uppercase font-bold">Mittwoch</span><span class="text-xl font-bold">18. Okt.</span></div>
+                            <span class="bg-primary text-white text-[8px] px-2 py-0.5 rounded-full font-bold">HEUTE</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-xs">sunny</span> VORMITTAG</span>
+                                <input class="w-full text-xs font-mono border border-outline-variant rounded p-1 text-center" value="07:45 - 12:15">
+                            </div>
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-xs">bedtime</span> NACHMITTAG</span>
+                                <input class="w-full text-xs font-mono border border-outline-variant rounded p-1 text-center" placeholder="--:-- - --:--">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75">
+                        <span class="block text-[10px] text-secondary uppercase font-bold">Montag</span><span class="text-xl font-bold">16. Okt.</span>
+                        <div class="mt-4 text-xs font-mono text-primary font-bold">8.5 h</div>
+                    </div>
+                    <div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75">
+                        <span class="block text-[10px] text-secondary uppercase font-bold">Dienstag</span><span class="text-xl font-bold">17. Okt.</span>
+                        <div class="mt-4 text-xs font-mono text-primary font-bold">8.5 h</div>
+                    </div>
+                    <div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75"><span class="text-[10px] text-secondary font-bold">Do 19.</span></div>
+                    <div class="bg-white border border-outline-variant rounded-xl p-4 opacity-75"><span class="text-[10px] text-secondary font-bold">Fr 20.</span></div>
+                    <div class="bg-surface-container-low border border-outline-variant border-dashed rounded-xl p-4 grayscale"><span class="text-[10px] text-secondary font-bold">Sa 21.</span></div>
+                    <div class="bg-surface-container-low border border-outline-variant border-dashed rounded-xl p-4 grayscale"><span class="text-[10px] text-secondary font-bold">So 22.</span></div>
+                </div>
+            </section>
+
+            <!-- 3. Team Dashboard View -->
+            <section class="view-section" id="view-team">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="md:col-span-2 bg-white border border-outline-variant p-6 rounded-xl">
+                        <p class="text-xs font-bold text-on-surface-variant uppercase mb-2">Team-Anwesenheit</p>
+                        <h3 class="text-2xl font-bold text-primary mb-4">Wer ist momentan aktiv</h3>
+                        <div class="flex items-center gap-6">
+                            <div class="text-center"><span class="text-2xl font-bold">14</span><p class="text-[10px] text-outline">Am Arbeiten</p></div>
+                            <div class="text-center"><span class="text-2xl font-bold text-secondary">3</span><p class="text-[10px] text-outline">Pause</p></div>
+                            <div class="flex -space-x-2 ml-auto">
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-primary text-white text-[10px] flex items-center justify-center">+5</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-outline-variant p-6 rounded-xl flex flex-col justify-center items-center">
+                        <p class="text-xs font-bold text-on-surface-variant uppercase mb-4">Kapazität</p>
+                        <div class="relative w-20 h-20 flex items-center justify-center">
+                            <svg class="w-full h-full -rotate-90"><circle class="text-surface-container-high" cx="40" cy="40" fill="transparent" r="35" stroke="currentColor" stroke-width="6"></circle><circle class="text-primary" cx="40" cy="40" fill="transparent" r="35" stroke="currentColor" stroke-dasharray="220" stroke-dashoffset="55" stroke-width="6"></circle></svg>
+                            <span class="absolute text-sm font-bold">75%</span>
+                        </div>
+                    </div>
+                    <div class="bg-error-container p-6 rounded-xl text-on-error-container">
+                        <p class="text-[10px] font-bold uppercase mb-2">Korrekturanfragen</p>
+                        <h4 class="text-4xl font-bold">08</h4>
+                        <button class="mt-4 w-full bg-on-error-container text-white py-2 rounded-lg text-xs font-bold">Prüfen</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white border border-outline-variant p-5 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-surface-variant border-2 border-tertiary-fixed-dim"></div>
+                            <div><h4 class="text-sm font-bold">Stefan Müller</h4><p class="text-[10px] text-outline">Chefarchitekt</p></div>
+                        </div>
+                        <div class="w-full h-1.5 bg-surface-container rounded-full"><div class="h-full bg-primary rounded-full w-[86%]"></div></div>
+                        <div class="mt-2 flex justify-between text-[10px]"><span class="text-tertiary-fixed-dim font-bold">Im Büro</span><span class="font-mono">34:45 / 40h</span></div>
+                    </div>
+                    <div class="bg-white border border-outline-variant p-5 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-surface-variant border-2 border-primary-fixed"></div>
+                            <div><h4 class="text-sm font-bold">Elena Keller</h4><p class="text-[10px] text-outline">UI-Designerin</p></div>
+                        </div>
+                        <div class="w-full h-1.5 bg-surface-container rounded-full"><div class="h-full bg-primary rounded-full w-[88%]"></div></div>
+                        <div class="mt-2 flex justify-between text-[10px]"><span class="text-primary-fixed-variant font-bold">Homeoffice</span><span class="font-mono">28:10 / 32h</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Reports View -->
+            <section class="view-section" id="view-reports">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="md:col-span-2 bg-white p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
+                        <span class="text-xs font-bold text-outline uppercase tracking-wider">Gesamtstunden (Okt)</span>
+                        <div class="flex items-baseline gap-2 mt-2">
+                            <h3 class="text-3xl font-bold text-primary">168.5</h3>
+                            <span class="text-sm text-on-surface-variant">/ 160.0h Ziel</span>
+                        </div>
+                        <div class="mt-4 w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-tertiary-container h-full w-[85%]"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant">
+                        <span class="text-xs font-bold text-outline uppercase tracking-wider">Verrechenbar</span>
+                        <h3 class="text-2xl font-bold mt-2">92.4%</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-outline-variant">
+                        <span class="text-xs font-bold text-outline uppercase tracking-wider">Netto Überzeit</span>
+                        <h3 class="text-2xl font-bold mt-2">+8h 30m</h3>
+                    </div>
+                </div>
+                <div class="bg-white border border-outline-variant rounded-xl overflow-hidden mb-8">
+                    <div class="px-6 py-4 border-b border-surface-container bg-surface-container-low font-bold text-sm">PROJEKTZUTEILUNG</div>
+                    <table class="w-full text-left">
+                        <thead><tr class="text-[10px] text-outline uppercase border-b border-surface-container"><th class="px-6 py-4">Projekt</th><th class="px-6 py-4 text-right">Stunden</th><th class="px-6 py-4">Status</th></tr></thead>
+                        <tbody class="divide-y divide-surface-container">
+                            <tr class="hover:bg-surface-container-low"><td class="px-6 py-4 text-sm font-bold">Alpha Phoenix Redesign</td><td class="px-6 py-4 text-right font-mono">72:45</td><td class="px-6 py-4"><span class="px-2 py-0.5 bg-tertiary-fixed text-[8px] font-bold rounded-full">AKTIV</span></td></tr>
+                            <tr class="hover:bg-surface-container-low"><td class="px-6 py-4 text-sm font-bold">Interne Wartung</td><td class="px-6 py-4 text-right font-mono">45:20</td><td class="px-6 py-4"><span class="px-2 py-0.5 bg-surface-variant text-[8px] font-bold rounded-full">RECURRING</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 5. Management View -->
+            <section class="view-section" id="view-management">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-1">Mitarbeiter-Verwaltung</h3>
+                        <p class="text-sm text-on-surface-variant">Zugriffe und Rollen Ihres Teams verwalten.</p>
+                    </div>
+                    <button class="bg-primary text-white px-6 py-2 rounded-lg font-bold text-sm shadow-sm hover:opacity-90" id="openAddEmployeeModal">Mitarbeiter hinzufügen</button>
+                </div>
+                <div class="bg-white border border-outline-variant rounded-xl overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-surface-container-low border-b border-outline-variant">
+                            <tr class="text-[10px] text-outline uppercase font-bold"><th class="px-6 py-4">Name &amp; Rolle</th><th class="px-6 py-4">Email</th><th class="px-6 py-4">Team</th><th class="px-6 py-4 text-right">Aktionen</th></tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant" id="mgmt-table-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 6. Profile View -->
+            <section class="view-section" id="view-profile">
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="bg-white border border-outline-variant rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center md:items-start relative overflow-hidden shadow-sm">
+                        <div class="w-32 h-32 rounded-xl bg-surface-container-high border-2 border-primary overflow-hidden">
+                            <img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWDrKjX5ezWZNw68e2EIj5RBFSUlPwg_iEzheA-7sABFngYckMJGjHmoGcC33EB-QjK09qRQVVmQIF_N6aLAZKe8SjKdBBR7IafpYD8wFITH-xXoL3RvIme-Qb1aE4B_445t3EFNyI8wrYwYan-sP3JG0FZ-_5Qm7o3ep7A9hNa8r_gbRmSwsSSRld0v7-Jpps_ylZOVxmoNotUhvws8OvcCQXX9bnmdpNjW8J6A4s_I_Kssp9P9VUm2V0umNsgu6deJZ3AOSHbKM">
+                        </div>
+                        <div class="flex-1 text-center md:text-left">
+                            <h2 class="text-3xl font-bold mb-1">Markus Döltschi</h2>
+                            <p class="text-on-surface-variant mb-4">Leitender Projektarchitekt • Engineering</p>
+                            <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                                <span class="bg-surface-container px-4 py-1.5 rounded-full text-xs font-bold text-primary">m.doeltschi@company.com</span>
+                                <span class="bg-tertiary-container/10 px-4 py-1.5 rounded-full text-xs font-bold text-tertiary">Admin-Zugriff</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white border border-outline-variant rounded-xl p-6">
+                            <h4 class="text-xs font-bold text-outline uppercase mb-4">Beschäftigungsgrad</h4>
+                            <div class="flex items-baseline gap-2"><span class="text-4xl font-bold">100%</span><span class="text-sm text-outline">Vollzeit</span></div>
+                            <div class="mt-4 h-2 bg-surface-container rounded-full"><div class="h-full bg-primary rounded-full w-full"></div></div>
+                        </div>
+                        <div class="bg-white border border-outline-variant rounded-xl p-6">
+                            <h4 class="text-xs font-bold text-outline uppercase mb-4">Wochenziel</h4>
+                            <div class="flex items-baseline gap-2"><span class="text-4xl font-bold font-mono">42.5</span><span class="text-sm text-outline">Stunden</span></div>
+                            <div class="mt-4 flex gap-1"><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-primary rounded-full"></div><div class="h-2 flex-1 bg-surface-container rounded-full"></div></div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-outline-variant rounded-xl p-8">
+                        <h3 class="text-lg font-bold mb-6">Benutzer wechseln</h3>
+                        <div class="flex gap-8 overflow-x-auto pb-2">
+                            <button class="flex flex-col items-center gap-2 min-w-[80px] group">
+                                <div class="w-16 h-16 rounded-full bg-surface-container border-2 border-outline-variant group-hover:border-primary"></div>
+                                <span class="text-xs font-bold">Sarah Miller</span>
+                            </button>
+                            <button class="flex flex-col items-center gap-2 min-w-[80px] group">
+                                <div class="w-16 h-16 rounded-full bg-surface-container border-2 border-outline-variant group-hover:border-primary"></div>
+                                <span class="text-xs font-bold">David Chen</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal: Add Employee -->
+    <div class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" id="employeeModal">
+        <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden border border-outline-variant">
+            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+                <h2 class="text-lg font-bold">Mitarbeiter hinzufügen</h2>
+                <button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container rounded-full p-1" id="closeMgmtModal">close</button>
+            </div>
+            <form class="p-6 space-y-4" id="addEmployeeForm">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-on-surface-variant" for="newName">Name</label>
+                        <input class="rounded-lg border-outline-variant text-sm p-2" id="newName" placeholder="z.B. Lukas Müller" required="" type="text">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-on-surface-variant" for="newRole">Rolle</label>
+                        <input class="rounded-lg border-outline-variant text-sm p-2" id="newRole" placeholder="z.B. Entwickler" required="" type="text">
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-bold text-on-surface-variant" for="newEmail">E-Mail</label>
+                    <input class="rounded-lg border-outline-variant text-sm p-2" id="newEmail" placeholder="beispiel@firma.ch" required="" type="email">
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button class="flex-1 py-2.5 border border-outline-variant rounded-lg text-sm font-bold text-on-surface-variant" id="cancelMgmtModal" type="button">Abbrechen</button>
+                    <button class="flex-1 py-2.5 bg-primary text-white rounded-lg text-sm font-bold" type="submit">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
         /**
          * 1. Data Store Management (LocalStorage)
          */
@@ -616,19 +606,4 @@
         document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
             const sidebar = document.querySelector('aside');
             sidebar.classList.toggle('hidden');
-            sidebar.classList.toggle('flex');
-            sidebar.classList.toggle('w-full');
-            sidebar.classList.toggle('z-50');
-        });
-
-        // Initial Load
-        const initialHash = window.location.hash.replace('#', '');
-        if (initialHash && viewNames[initialHash]) {
-            switchView(initialHash);
-        } else {
-            switchView('dashboard');
-        }
-        
-        renderData();
-    </script>
-</body></html>
+            sidebar.classList.toggle('</script></body></html>
